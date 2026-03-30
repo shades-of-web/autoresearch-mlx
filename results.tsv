@@ -16,3 +16,5 @@ b7a4260	1.729713	10.7	discard	lower weight decay to 0.1 + reduce eval batch to 6
 8249e6e	1.630843	6.0	discard	halve batch to 2^13 with device_batch=4 (too noisy)
 dbf037d	1.605885	6.0	discard	add 5% warmup ratio
 127d560	1.482143	5.8	keep	reduce MLP ratio from 4x to 3x (883 steps)
+c7d6872	1.507505	5.8	discard	lower matrix LR to 0.03
+4d629fc	1.467641	5.8	keep	increase matrix LR to 0.08
