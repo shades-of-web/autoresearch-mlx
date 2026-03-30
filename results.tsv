@@ -11,3 +11,5 @@ b7a4260	1.729713	10.7	discard	lower weight decay to 0.1 + reduce eval batch to 6
 49154e9	1.715551	10.7	keep	reduce aspect ratio to 48 (same model size but more steps)
 0c479cd	1.742061	10.7	discard	increase adam beta1 from 0.8 to 0.9
 4547f3b	1.692232	9.5	keep	remove logit soft-capping (simplification win)
+59015cb	1.816598	11.7	discard	depth 6 with aspect_ratio 32 (slower - only 211 steps)
+5f81125	1.518707	6.0	keep	halve batch to 2^14 with device_batch=8 (706 steps)
