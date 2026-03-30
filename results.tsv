@@ -7,3 +7,5 @@ commit	val_bpb	memory_gb	status	description
 346f602	0.000000	0.0	crash	lower weight decay to 0.1 (Metal GPU error)
 b7a4260	1.729713	10.7	discard	lower weight decay to 0.1 + reduce eval batch to 64
 52fc7be	1.890152	10.7	keep	reduce eval batch to 64 (stability fix - val_bpb variance from non-determinism)
+62d69ee	2.504520	13.6	discard	increase aspect ratio to 80 (too slow - only 34 steps)
+49154e9	1.715551	10.7	keep	reduce aspect ratio to 48 (same model size but more steps)
