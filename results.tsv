@@ -1,6 +1,20 @@
 commit	val_bpb	memory_gb	status	description
-383abb4	2.667000	26.9	keep	baseline (AdamW, default config)
-c67ad2a	2.695369	26.9	discard	lower weight decay to 0.1
-909dd59	2.588904	26.9	keep	halve total batch size to 2^16
-4161af3	2.533728	26.9	keep	increase matrix LR to 0.04
-5efc7aa	1.807902	20.7	keep	reduce depth from 8 to 4
+1caa3b9	2.043162	20.7	keep	baseline
+35edf08	1.886430	20.7	keep	halve total batch size to 2^15
+99cda52	1.817981	20.2	keep	increase matrix LR to 0.06
+3b98d11	0.000000	0.0	crash	increase warmdown ratio to 0.7 (Metal GPU error)
+11b8b14	1.672335	22.7	keep	switch activation from squared ReLU to SiLU
+346f602	0.000000	0.0	crash	lower weight decay to 0.1 (Metal GPU error)
+b7a4260	1.729713	10.7	discard	lower weight decay to 0.1 + reduce eval batch to 64
+52fc7be	1.890152	10.7	keep	reduce eval batch to 64 (stability fix - val_bpb variance from non-determinism)
+62d69ee	2.504520	13.6	discard	increase aspect ratio to 80 (too slow - only 34 steps)
+49154e9	1.715551	10.7	keep	reduce aspect ratio to 48 (same model size but more steps)
+0c479cd	1.742061	10.7	discard	increase adam beta1 from 0.8 to 0.9
+4547f3b	1.692232	9.5	keep	remove logit soft-capping (simplification win)
+59015cb	1.816598	11.7	discard	depth 6 with aspect_ratio 32 (slower - only 211 steps)
+5f81125	1.518707	6.0	keep	halve batch to 2^14 with device_batch=8 (706 steps)
+8249e6e	1.630843	6.0	discard	halve batch to 2^13 with device_batch=4 (too noisy)
+dbf037d	1.605885	6.0	discard	add 5% warmup ratio
+127d560	1.482143	5.8	keep	reduce MLP ratio from 4x to 3x (883 steps)
+c7d6872	1.507505	5.8	discard	lower matrix LR to 0.03
+4d629fc	1.467641	5.8	keep	increase matrix LR to 0.08

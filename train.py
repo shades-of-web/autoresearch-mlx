@@ -105,12 +105,12 @@ class CausalSelfAttention(nn.Module):
 class MLP(nn.Module):
     def __init__(self, config):
         super().__init__()
-        self.c_fc = nn.Linear(config.n_embd, 4 * config.n_embd, bias=False)
-        self.c_proj = nn.Linear(4 * config.n_embd, config.n_embd, bias=False)
+        self.c_fc = nn.Linear(config.n_embd, 3 * config.n_embd, bias=False)
+        self.c_proj = nn.Linear(3 * config.n_embd, config.n_embd, bias=False)
 
     def __call__(self, x):
         x = self.c_fc(x)
-        x = mx.maximum(x, 0) ** 2
+        x = x * mx.sigmoid(x)
         return self.c_proj(x)
 
 
@@ -206,7 +206,6 @@ class GPT(nn.Module):
         x = norm(x)
 
         logits = self.lm_head(x).astype(mx.float32)
-        logits = 15.0 * mx.tanh(logits / 15.0)
 
         if targets is None:
             return logits
@@ -356,15 +355,15 @@ class AdamW:
 # ---------------------------------------------------------------------------
 
 # Model architecture
-ASPECT_RATIO = 64
+ASPECT_RATIO = 48
 HEAD_DIM = 128
 WINDOW_PATTERN = "SSSL"
 
 # v0.1: AdamW only. Muon port is future work.
-TOTAL_BATCH_SIZE = 2**16
+TOTAL_BATCH_SIZE = 2**14
 EMBEDDING_LR = 0.6
 UNEMBEDDING_LR = 0.004
-MATRIX_LR = 0.04
+MATRIX_LR = 0.08
 SCALAR_LR = 0.5
 WEIGHT_DECAY = 0.2
 ADAM_BETAS = (0.8, 0.95)
@@ -374,8 +373,8 @@ FINAL_LR_FRAC = 0.0
 
 # Model size
 DEPTH = 4
-DEVICE_BATCH_SIZE = 16
-FINAL_EVAL_BATCH_SIZE = 256
+DEVICE_BATCH_SIZE = 8
+FINAL_EVAL_BATCH_SIZE = 64
 STARTUP_EXCLUDE_STEPS = 1
 
 
