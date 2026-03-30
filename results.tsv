@@ -4,3 +4,6 @@ commit	val_bpb	memory_gb	status	description
 99cda52	1.817981	20.2	keep	increase matrix LR to 0.06
 3b98d11	0.000000	0.0	crash	increase warmdown ratio to 0.7 (Metal GPU error)
 11b8b14	1.672335	22.7	keep	switch activation from squared ReLU to SiLU
+346f602	0.000000	0.0	crash	lower weight decay to 0.1 (Metal GPU error)
+b7a4260	1.729713	10.7	discard	lower weight decay to 0.1 + reduce eval batch to 64
+52fc7be	1.890152	10.7	keep	reduce eval batch to 64 (stability fix - val_bpb variance from non-determinism)
