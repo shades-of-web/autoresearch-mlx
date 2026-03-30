@@ -1,3 +1,4 @@
 commit	val_bpb	memory_gb	status	description
 1caa3b9	2.043162	20.7	keep	baseline
 35edf08	1.886430	20.7	keep	halve total batch size to 2^15
+99cda52	1.817981	20.2	keep	increase matrix LR to 0.06
