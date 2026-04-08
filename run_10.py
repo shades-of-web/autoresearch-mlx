@@ -11,6 +11,13 @@ TRAIN_CMD = ["uv", "run", "train.py"]
 LATEST = "latest_checkpoint.npz"
 BEST = "best_checkpoint.npz"
 
+def _parse_val_bpb(lines):
+    for line in lines:
+        m = re.search(r"val_bpb:\s+([\d.]+)", line)
+        if m:
+            return float(m.group(1))
+    return None
+
 results = []
 best_bpb = float("inf")
 best_run = -1
@@ -38,37 +45,27 @@ for run in range(1, NUM_RUNS + 1):
     if proc.returncode != 0:
         print(f"\nRun {run} FAILED (exit code {proc.returncode})")
         results.append(("FAIL", None))
-        continue
-
-    val_bpb = None
-    for line in output_lines:
-        m = re.search(r"val_bpb:\s+([\d.]+)", line)
-        if m:
-            val_bpb = float(m.group(1))
-            break
-
-    if val_bpb is None:
+    elif (val_bpb := _parse_val_bpb(output_lines)) is None:
         print(f"\nRun {run}: could not parse val_bpb")
         results.append(("NO_BPB", None))
-        continue
-
-    results.append(("OK", val_bpb))
-    print(f"\nRun {run} val_bpb: {val_bpb:.6f}", end="")
-
-    if val_bpb < best_bpb:
-        best_bpb = val_bpb
-        best_run = run
-        shutil.copy2(LATEST, BEST)
-        print(f"  <-- NEW BEST")
     else:
-        print(f"  (best: {best_bpb:.6f} from run {best_run})")
+        results.append(("OK", val_bpb))
+        print(f"\nRun {run} val_bpb: {val_bpb:.6f}", end="")
+
+        if val_bpb < best_bpb and os.path.exists(LATEST):
+            best_bpb = val_bpb
+            best_run = run
+            shutil.copy2(LATEST, BEST)
+            print("  <-- NEW BEST")
+        else:
+            print(f"  (best: {best_bpb:.6f} from run {best_run})")
 
     if os.path.exists(LATEST):
         os.remove(LATEST)
 
-print(f"\n{'='*60}")
-print(f"  SUMMARY")
-print(f"{'='*60}")
+print("\n" + "=" * 60)
+print("  SUMMARY")
+print("=" * 60)
 for i, (status, bpb) in enumerate(results, 1):
     marker = " <-- BEST" if i == best_run else ""
     if bpb is not None:
