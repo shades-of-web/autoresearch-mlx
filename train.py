@@ -510,6 +510,8 @@ val_bpb = evaluate_bpb(model, tokenizer, FINAL_EVAL_BATCH_SIZE)
 t_eval = time.time()
 print(f"Final eval completed in {t_eval - t_train:.1f}s")
 
+mx.savez("latest_checkpoint.npz", **dict(tree_flatten(model.parameters())))
+
 steady_state_mfu = 0.0
 peak_vram_mb = get_peak_memory_mb()
 
